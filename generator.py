@@ -80,6 +80,7 @@ master = Tk()
 w = Canvas(master, width=canvasWidth, height=canvasHeight, bg='white')
 w.pack()
 
+
 #generate points
 for i in range(noofPoints):
 	p = Point(r.randrange(0, canvasWidth), r.randrange(0, canvasHeight))
@@ -111,6 +112,17 @@ for s in seeds:
 	if (s.visible == 1):
 		s.removePoint(w)
 		
+
+#draw black borders
+
+#top
+w.create_line(0, 0, 1500, 0, width=10)
+#left
+w.create_line(0, 0, 0, 900, width=10)
+#right
+w.create_line(1500, 0, 1500, 900, width=10)
+#bottom
+w.create_line(0, 900, 1500, 900, width=10)
 
 #w.create_line(100, 100, 400, 300, width=5)
 mainloop()
