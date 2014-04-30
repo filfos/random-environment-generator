@@ -46,27 +46,29 @@ def findNextSeed(seed, jumps, canvas, lineWidth):
 	for p in points:
 		if (p.visible == 0):
 			continue
-		if( p.insideCircle(s, searchRadius) ):
+		if( p.insideCircle(seed, searchRadius) ):
 			p.removePoint(canvas)
-			vectors.append( getVector(s, p) )
-
+			vectors.append( getVector(seed, p) )
+	#print len(vectors)
+	#print 'old : ' + str(seed.x) + ' ' + str(seed.y)
 	if (len(vectors) != 0 and jumps != 0):
 		v = averageVector(vectors)
+		#print 'new : ' + str(v.x) + ' ' + str(v.y)
 		seed.removePoint(canvas)
 		drawLine(seed, v, canvas, lineWidth)
-		findNextSeed(Point(v.x, v.y), jumps-1, canvas, lineWidth)
+		findNextSeed(Point(seed.x + v.x, seed.y + v.y), jumps-1, canvas, lineWidth)
 	
 
-noofPoints = 1500;
-noofSeeds = 50;
+noofPoints = 1500
+noofSeeds = 10
 
-minSeedJumps = 3000
-maxSeedJumps = 4000;
+#minSeedJumps = 1
+maxSeedJumps = 1
 
-searchRadius = 200;
+searchRadius = 200
 
-canvasWidth = 1500;
-canvasHeight = 900;
+canvasWidth = 1000
+canvasHeight = 1000
 
 points = []
 seeds = []
@@ -96,9 +98,10 @@ for i in range(noofSeeds):
 # Find points within maxRadius of each seedpoint
 # Average the vector between seed and points to create a new seed.
 # Connect the seeds with a line
+
 for s in seeds:
-	jumps = r.randrange(minSeedJumps, maxSeedJumps)
-	findNextSeed(s, jumps, w, 20)
+	jumps = r.randrange(1, maxSeedJumps+1)
+	findNextSeed(s, jumps, w, 5)
 		
 	
 
@@ -116,13 +119,13 @@ for s in seeds:
 #draw black borders
 
 #top
-w.create_line(0, 0, 1500, 0, width=10)
+#w.create_line(0, 0, 1500, 0, width=10)
 #left
-w.create_line(0, 0, 0, 900, width=10)
+#w.create_line(0, 0, 0, 900, width=10)
 #right
-w.create_line(1500, 0, 1500, 900, width=10)
+#w.create_line(1500, 0, 1500, 900, width=10)
 #bottom
-w.create_line(0, 900, 1500, 900, width=10)
+#w.create_line(0, 900, 1500, 900, width=10)
 
 #w.create_line(100, 100, 400, 300, width=5)
 mainloop()
