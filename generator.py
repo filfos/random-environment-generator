@@ -49,26 +49,24 @@ def findNextSeed(seed, jumps, canvas, lineWidth):
 		if( p.insideCircle(seed, searchRadius) ):
 			p.removePoint(canvas)
 			vectors.append( getVector(seed, p) )
-	#print len(vectors)
-	#print 'old : ' + str(seed.x) + ' ' + str(seed.y)
 	if (len(vectors) != 0 and jumps != 0):
 		v = averageVector(vectors)
-		#print 'new : ' + str(v.x) + ' ' + str(v.y)
 		seed.removePoint(canvas)
 		drawLine(seed, v, canvas, lineWidth)
 		findNextSeed(Point(seed.x + v.x, seed.y + v.y), jumps-1, canvas, lineWidth)
 	
 
+
+#### PARAMETERS ####
+canvasWidth = 1000
+canvasHeight = 1000
+
 noofPoints = 1500
 noofSeeds = 10
 
-#minSeedJumps = 1
-maxSeedJumps = 1
-
 searchRadius = 200
 
-canvasWidth = 1000
-canvasHeight = 1000
+maxSeedJumps = 1
 
 points = []
 seeds = []
@@ -76,9 +74,9 @@ master = Tk()
 
 
 
-#############
-### START ###
-#############
+###################
+###### START ######
+###################
 w = Canvas(master, width=canvasWidth, height=canvasHeight, bg='white')
 w.pack()
 
