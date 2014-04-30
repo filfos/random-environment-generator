@@ -1,5 +1,6 @@
 from Tkinter import *
 import random as r
+import Image, ImageDraw
 
 class Point:
 	def __init__(self, x, y):
@@ -38,10 +39,12 @@ def averageVector(vectors):
 
 def drawLine(point, vector, canvas, lineWidth):
 	w.create_line(point.x, point.y, point.x + vector.x, point.y + vector.y, width=lineWidth)
+	#Draw the same line in memory
+	draw.line((point.x, point.y, point.x + vector.x, point.y + vector.y), fill=(0,0,0), width=lineWidth)
 	
 		
 
-def findNextSeed(seed, jumps, canvas, lineWidth):
+def findNextSeed(seed, jumps, canvas, draw, lineWidth):
 	vectors = []
 	for p in points:
 		if (p.visible == 0):
@@ -53,7 +56,7 @@ def findNextSeed(seed, jumps, canvas, lineWidth):
 		v = averageVector(vectors)
 		seed.removePoint(canvas)
 		drawLine(seed, v, canvas, lineWidth)
-		findNextSeed(Point(seed.x + v.x, seed.y + v.y), jumps-1, canvas, lineWidth)
+		findNextSeed(Point(seed.x + v.x, seed.y + v.y), jumps-1, canvas, draw, lineWidth)
 	
 
 
@@ -62,11 +65,11 @@ canvasWidth = 1000
 canvasHeight = 1000
 
 noofPoints = 1500
-noofSeeds = 10
+noofSeeds = 40
 
 searchRadius = 200
 
-maxSeedJumps = 1
+maxSeedJumps = 10
 
 points = []
 seeds = []
@@ -80,6 +83,10 @@ master = Tk()
 w = Canvas(master, width=canvasWidth, height=canvasHeight, bg='white')
 w.pack()
 
+#create an empty image in memory
+white = (255, 255, 255)
+img = Image.new("RGB", (canvasWidth, canvasHeight), white)
+draw = ImageDraw.Draw(img)
 
 #generate points
 for i in range(noofPoints):
@@ -99,12 +106,8 @@ for i in range(noofSeeds):
 
 for s in seeds:
 	jumps = r.randrange(1, maxSeedJumps+1)
-	findNextSeed(s, jumps, w, 5)
+	findNextSeed(s, jumps, w, draw, 5)
 		
-	
-
-
-
 #delete all remaining points
 for p in points:
 	if (p.visible == 1):
@@ -113,6 +116,9 @@ for s in seeds:
 	if (s.visible == 1):
 		s.removePoint(w)
 		
+#save image to working directory
+filename = "env.png"
+img.save(filename)
 
 #draw black borders
 
@@ -125,7 +131,6 @@ for s in seeds:
 #bottom
 #w.create_line(0, 900, 1500, 900, width=10)
 
-#w.create_line(100, 100, 400, 300, width=5)
 mainloop()
 
 
